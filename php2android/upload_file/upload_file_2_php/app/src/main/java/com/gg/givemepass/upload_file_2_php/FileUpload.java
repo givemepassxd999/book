@@ -1,5 +1,7 @@
 package com.gg.givemepass.upload_file_2_php;
 
+import android.util.Log;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
@@ -45,7 +47,7 @@ public class FileUpload {
         int bytesRead, bytesAvailable, bufferSize;
         byte[] buffer;
         int maxBufferSize = 1 * 1024 * 1024;
-        String urlString = "http://192.168.56.1/upload.php";
+        String urlString = "http://10.1.17.111:8888/upload.php";
 
         try {
             FileInputStream fileInputStream = new FileInputStream(new File(existingFileName));
@@ -82,8 +84,10 @@ public class FileUpload {
             dos.close();
             isSucess = true;
         } catch (MalformedURLException e){
+            Log.e("", e.getMessage());
             isSucess = false;
         } catch (IOException e) {
+            Log.e("", e.getMessage());
             isSucess = false;
         }
 

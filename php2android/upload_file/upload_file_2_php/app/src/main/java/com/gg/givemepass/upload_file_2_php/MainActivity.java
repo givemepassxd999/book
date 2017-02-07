@@ -1,7 +1,10 @@
 package com.gg.givemepass.upload_file_2_php;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -15,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView resMsg;
     private ExecutorService executorService;
     private FileUpload fileUpload;
+    private static final int REQUEST_EXTERNAL_STORAGE = 100;
     private static final String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/DCIM/butterfly.png";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,11 +33,36 @@ public class MainActivity extends AppCompatActivity {
                 executorService.submit(new Runnable() {
                     @Override
                     public void run() {
-                        fileUpload.doFileUpload(filePath);
+                        int permission = ActivityCompat.checkSelfPermission(MainActivity.this,
+                                Manifest.permission.READ_EXTERNAL_STORAGE);
+                        if (permission != PackageManager.PERMISSION_GRANTED) {
+                            //未取得權限，向使用者要求允許權限
+                            ActivityCompat.requestPermissions(MainActivity.this,
+                                    new String[] {Manifest.permission.READ_EXTERNAL_STORAGE},
+                                    REQUEST_EXTERNAL_STORAGE
+                            );
+                        } else{
+                            fileUpload.doFileUpload(filePath);
+                        }
+
                     }
                 });
             }
         });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_EXTERNAL_STORAGE: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    fileUpload.doFileUpload(filePath);
+                } else {
+                    finish();
+                }
+                return;
+            }
+        }
     }
 
     private void initData() {
