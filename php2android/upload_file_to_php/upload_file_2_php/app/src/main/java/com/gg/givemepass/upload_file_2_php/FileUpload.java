@@ -2,11 +2,12 @@ package com.gg.givemepass.upload_file_2_php;
 
 import android.util.Log;
 
-import java.io.DataInputStream;
+import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -39,7 +40,7 @@ public class FileUpload {
     public void doFileUpload(String path) {
         HttpURLConnection conn = null;
         DataOutputStream dos = null;
-        DataInputStream inStream = null;
+        BufferedReader inStream = null;
         String existingFileName = path;
         String lineEnd = "\r\n";
         String twoHyphens = "--";
@@ -47,7 +48,7 @@ public class FileUpload {
         int bytesRead, bytesAvailable, bufferSize;
         byte[] buffer;
         int maxBufferSize = 1 * 1024 * 1024;
-        String urlString = "http://10.1.17.111:8888/upload.php";
+        String urlString = "http://192.168.43.253:8888/upload.php";
 
         try {
             FileInputStream fileInputStream = new FileInputStream(new File(existingFileName));
@@ -86,13 +87,15 @@ public class FileUpload {
         } catch (MalformedURLException e){
             Log.e("", e.getMessage());
             isSucess = false;
+            mResponseMsg = e.getMessage();
         } catch (IOException e) {
             Log.e("", e.getMessage());
             isSucess = false;
+            mResponseMsg = e.getMessage();
         }
 
         try {
-            inStream = new DataInputStream(conn.getInputStream());
+            inStream = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             String str;
             while ((str = inStream.readLine()) != null) {
                 mResponseMsg = str;

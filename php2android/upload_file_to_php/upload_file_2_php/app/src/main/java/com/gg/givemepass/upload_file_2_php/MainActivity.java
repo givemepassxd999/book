@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.io.File;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -46,7 +47,17 @@ public class MainActivity extends AppCompatActivity {
                     executorService.submit(new Runnable() {
                         @Override
                         public void run() {
-                            fileUpload.doFileUpload(filePath);
+                            File f = new File(filePath);
+                            if(f.exists()) {
+                                fileUpload.doFileUpload(filePath);
+                            } else{
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        resMsg.setText("file is not exist");
+                                    }
+                                });
+                            }
                         }
                     });
                 }
@@ -57,14 +68,29 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {
-            case REQUEST_EXTERNAL_STORAGE: {
+            case REQUEST_EXTERNAL_STORAGE:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    fileUpload.doFileUpload(filePath);
+                    executorService.submit(new Runnable() {
+                        @Override
+                        public void run() {
+                            File f = new File(filePath);
+                            if(f.exists()) {
+                                fileUpload.doFileUpload(filePath);
+                            } else{
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        resMsg.setText("file is not exist");
+                                    }
+                                });
+                            }
+                        }
+                    });
                 } else {
                     finish();
                 }
-                return;
-            }
+            return;
+
         }
     }
 
