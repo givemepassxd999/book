@@ -35,22 +35,23 @@ public class MainActivity extends AppCompatActivity {
 
     public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         private List<String> paths;
-
+        private String addr = "http://192.168.43.253:8888/img/";
         public MyAdapter() {
             paths = new ArrayList<>();
-            paths.add("http://192.168.56.1:7777/img/butterfly.png");
-            paths.add("http://192.168.56.1:7777/img/car1.png");
-            paths.add("http://192.168.56.1:7777/img/car2.png");
-            paths.add("http://192.168.56.1:7777/img/car3.png");
-            paths.add("http://192.168.56.1:7777/img/car4.png");
-            paths.add("http://192.168.56.1:7777/img/cat.png");
-            paths.add("http://192.168.56.1:7777/img/flower.png");
-            paths.add("http://192.168.56.1:7777/img/hippo.png");
-            paths.add("http://192.168.56.1:7777/img/monkey.png");
-            paths.add("http://192.168.56.1:7777/img/mushroom.png");
-            paths.add("http://192.168.56.1:7777/img/panda.png");
-            paths.add("http://192.168.56.1:7777/img/rabbit.png");
-            paths.add("http://192.168.56.1:7777/img/raccoon.png");
+            paths.add(new StringBuilder(addr).append("butterfly.png").toString());
+            paths.add(new StringBuilder(addr).append("car1.png").toString());
+            paths.add(new StringBuilder(addr).append("car2.png").toString());
+            paths.add(new StringBuilder(addr).append("car3.png").toString());
+            paths.add(new StringBuilder(addr).append("car4.png").toString());
+            paths.add(new StringBuilder(addr).append("cat.png").toString());
+            paths.add(new StringBuilder(addr).append("flower.png").toString());
+            paths.add(new StringBuilder(addr).append("hippo.png").toString());
+            paths.add(new StringBuilder(addr).append("monkey.png").toString());
+            paths.add(new StringBuilder(addr).append("mushroom.png").toString());
+            paths.add(new StringBuilder(addr).append("monkey.png").toString());
+            paths.add(new StringBuilder(addr).append("panda.png").toString());
+            paths.add(new StringBuilder(addr).append("rabbit.png").toString());
+            paths.add(new StringBuilder(addr).append("raccoon.png").toString());
         }
 
         public class ViewHolder extends RecyclerView.ViewHolder {
